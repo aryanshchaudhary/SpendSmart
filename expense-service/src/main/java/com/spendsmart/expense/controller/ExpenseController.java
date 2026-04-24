@@ -6,6 +6,7 @@ import com.spendsmart.expense.service.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -52,5 +53,12 @@ public class ExpenseController {
     ) {
         service.deleteExpense(id, email);
         return "Expense deleted successfully";
+    }
+    
+    @GetMapping("/summary")
+    public Map<String, Double> getCategorySummary(
+            @RequestHeader("X-User-Email") String email
+    ) {
+        return service.getCategorySummary(email);
     }
 }

@@ -5,6 +5,8 @@ import com.spendsmart.expense.entity.Expense;
 import com.spendsmart.expense.exception.ResourceNotFoundException;
 import com.spendsmart.expense.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -54,5 +56,16 @@ public class ExpenseService {
                 .orElseThrow(() -> new ResourceNotFoundException("Expense not found"));
 
         repository.delete(expense);
+    }
+    
+    public Map<String, Double> getCategorySummary(String email) {
+
+        List<Expense> expenses = repository.findByUserEmail(email);
+
+        return expenses.stream()
+                .collect(Collectors.groupingBy(
+                        Expense::getCategory,
+                        Collectors.summingDouble(Expense::getAmount)
+                ));
     }
 }

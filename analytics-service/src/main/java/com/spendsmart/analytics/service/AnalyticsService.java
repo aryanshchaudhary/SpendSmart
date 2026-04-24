@@ -22,7 +22,7 @@ public class AnalyticsService {
 
     public AnalyticsResponse getAnalytics(String email) {
 
-        //  CALL OTHER SERVICES WITH EMAIL
+        // 🔥 Call other services with email
         List<ExpenseDto> expenses = expenseClient.getExpenses(email);
         List<IncomeDto> incomes = incomeClient.getIncomes(email);
 
