@@ -1,3 +1,5 @@
+// RecurringController.java
+
 package com.spendsmart.recurring.controller;
 
 import com.spendsmart.recurring.dto.RecurringRequest;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/recurring")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RecurringController {
 
     private final RecurringService service;
@@ -33,12 +36,34 @@ public class RecurringController {
     }
 
     @GetMapping
-    public List<Recurring> getAll(@RequestHeader("X-User-Email") String email) {
+    public List<Recurring> getAll(
+            @RequestHeader("X-User-Email") String email) {
+
         return service.getAll(email);
     }
 
+    @PutMapping("/{id}")
+    public Recurring update(
+            @PathVariable Long id,
+            @RequestBody RecurringRequest request,
+            @RequestHeader("X-User-Email") String email) {
+
+        return service.update(id, request, email);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(
+            @PathVariable Long id,
+            @RequestHeader("X-User-Email") String email) {
+
+        service.delete(id, email);
+        return "Recurring deleted successfully";
+    }
+
     @PostMapping("/trigger")
-    public TriggerResponse trigger(@RequestHeader("X-User-Email") String email) {
+    public TriggerResponse trigger(
+            @RequestHeader("X-User-Email") String email) {
+
         return new TriggerResponse(service.trigger(email));
     }
 }
