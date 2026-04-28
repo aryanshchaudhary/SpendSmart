@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/incomes")
+@CrossOrigin("*")
 public class IncomeController {
 
     private final IncomeService service;
@@ -17,6 +18,7 @@ public class IncomeController {
         this.service = service;
     }
 
+    // CREATE
     @PostMapping
     public Income addIncome(
             @RequestBody IncomeRequest request,
@@ -25,6 +27,7 @@ public class IncomeController {
         return service.addIncome(request, email);
     }
 
+    // USER READ
     @GetMapping
     public List<Income> getIncomes(
             @RequestHeader("X-User-Email") String email
@@ -32,6 +35,13 @@ public class IncomeController {
         return service.getIncomes(email);
     }
 
+    // ADMIN READ ALL
+    @GetMapping("/admin")
+    public List<Income> getAllIncomes() {
+        return service.getAllIncomes();
+    }
+
+    // UPDATE
     @PutMapping("/{id}")
     public Income updateIncome(
             @PathVariable Long id,
@@ -41,6 +51,7 @@ public class IncomeController {
         return service.updateIncome(id, request, email);
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
     public String deleteIncome(
             @PathVariable Long id,

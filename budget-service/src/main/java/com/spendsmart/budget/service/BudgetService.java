@@ -17,9 +17,13 @@ public class BudgetService {
         this.repository = repository;
     }
 
-    public Budget addBudget(BudgetRequest request, String email) {
+    // CREATE
+    public Budget addBudget(
+            BudgetRequest request,
+            String email) {
 
         Budget budget = new Budget();
+
         budget.setCategory(request.getCategory());
         budget.setLimitAmount(request.getLimitAmount());
         budget.setUserEmail(email);
@@ -27,14 +31,26 @@ public class BudgetService {
         return repository.save(budget);
     }
 
+    // USER READ 
     public List<Budget> getBudgets(String email) {
         return repository.findByUserEmail(email);
     }
 
-    public Budget updateBudget(Long id, BudgetRequest request, String email) {
+    // ADMIN READ ALL
+    public List<Budget> getAllBudgets() {
+        return repository.findAll();
+    }
 
-        Budget budget = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Budget not found"));
+    // UPDATE
+    public Budget updateBudget(
+            Long id,
+            BudgetRequest request,
+            String email) {
+
+        Budget budget =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Budget not found"));
 
         budget.setCategory(request.getCategory());
         budget.setLimitAmount(request.getLimitAmount());
@@ -42,10 +58,15 @@ public class BudgetService {
         return repository.save(budget);
     }
 
-    public void deleteBudget(Long id, String email) {
+    // DELETE
+    public void deleteBudget(
+            Long id,
+            String email) {
 
-        Budget budget = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Budget not found"));
+        Budget budget =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Budget not found"));
 
         repository.delete(budget);
     }

@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/expenses")
+@CrossOrigin("*")
 public class ExpenseController {
 
     private final ExpenseService service;
@@ -27,12 +28,18 @@ public class ExpenseController {
         return service.addExpense(request, email);
     }
 
-    // READ
+    // USER READ 
     @GetMapping
     public List<Expense> getExpenses(
             @RequestHeader("X-User-Email") String email
     ) {
         return service.getExpenses(email);
+    }
+
+    // ADMIN READ ALL
+    @GetMapping("/admin")
+    public List<Expense> getAllExpenses() {
+        return service.getAllExpenses();
     }
 
     // UPDATE
@@ -54,7 +61,8 @@ public class ExpenseController {
         service.deleteExpense(id, email);
         return "Expense deleted successfully";
     }
-    
+
+    // SUMMARY
     @GetMapping("/summary")
     public Map<String, Double> getCategorySummary(
             @RequestHeader("X-User-Email") String email

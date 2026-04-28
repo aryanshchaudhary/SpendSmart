@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/budgets")
+@CrossOrigin("*")
 public class BudgetController {
 
     private final BudgetService service;
@@ -17,6 +18,7 @@ public class BudgetController {
         this.service = service;
     }
 
+    // CREATE 
     @PostMapping
     public Budget addBudget(
             @RequestBody BudgetRequest request,
@@ -25,6 +27,7 @@ public class BudgetController {
         return service.addBudget(request, email);
     }
 
+    // USER READ
     @GetMapping
     public List<Budget> getBudgets(
             @RequestHeader("X-User-Email") String email
@@ -32,6 +35,13 @@ public class BudgetController {
         return service.getBudgets(email);
     }
 
+    // ADMIN READ ALL 
+    @GetMapping("/admin")
+    public List<Budget> getAllBudgets() {
+        return service.getAllBudgets();
+    }
+
+    // UPDATE
     @PutMapping("/{id}")
     public Budget updateBudget(
             @PathVariable Long id,
@@ -41,6 +51,7 @@ public class BudgetController {
         return service.updateBudget(id, request, email);
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
     public String deleteBudget(
             @PathVariable Long id,

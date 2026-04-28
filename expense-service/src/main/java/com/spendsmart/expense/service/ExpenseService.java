@@ -5,10 +5,10 @@ import com.spendsmart.expense.entity.Expense;
 import com.spendsmart.expense.exception.ResourceNotFoundException;
 import com.spendsmart.expense.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
@@ -20,9 +20,12 @@ public class ExpenseService {
     }
 
     // CREATE
-    public Expense addExpense(ExpenseRequest request, String email) {
+    public Expense addExpense(
+            ExpenseRequest request,
+            String email) {
 
         Expense expense = new Expense();
+
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
         expense.setCategory(request.getCategory());
@@ -31,16 +34,26 @@ public class ExpenseService {
         return repository.save(expense);
     }
 
-    // READ
+    // USER READ
     public List<Expense> getExpenses(String email) {
         return repository.findByUserEmail(email);
     }
 
-    // UPDATE (with ownership check)
-    public Expense updateExpense(Long id, ExpenseRequest request, String email) {
+    // ADMIN READ ALL
+    public List<Expense> getAllExpenses() {
+        return repository.findAll();
+    }
 
-        Expense expense = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Expense not found"));
+    // UPDATE
+    public Expense updateExpense(
+            Long id,
+            ExpenseRequest request,
+            String email) {
+
+        Expense expense =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Expense not found"));
 
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
@@ -49,23 +62,32 @@ public class ExpenseService {
         return repository.save(expense);
     }
 
-    // DELETE (with ownership check)
-    public void deleteExpense(Long id, String email) {
+    // DELETE
+    public void deleteExpense(
+            Long id,
+            String email) {
 
-        Expense expense = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Expense not found"));
+        Expense expense =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Expense not found"));
 
         repository.delete(expense);
     }
-    
-    public Map<String, Double> getCategorySummary(String email) {
 
-        List<Expense> expenses = repository.findByUserEmail(email);
+    // SUMMARY
+    public Map<String, Double> getCategorySummary(
+            String email) {
+
+        List<Expense> expenses =
+                repository.findByUserEmail(email);
 
         return expenses.stream()
                 .collect(Collectors.groupingBy(
                         Expense::getCategory,
-                        Collectors.summingDouble(Expense::getAmount)
+                        Collectors.summingDouble(
+                                Expense::getAmount
+                        )
                 ));
     }
 }

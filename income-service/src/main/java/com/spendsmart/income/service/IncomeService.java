@@ -17,9 +17,13 @@ public class IncomeService {
         this.repository = repository;
     }
 
-    public Income addIncome(IncomeRequest request, String email) {
+    // CREATE
+    public Income addIncome(
+            IncomeRequest request,
+            String email) {
 
         Income income = new Income();
+
         income.setSource(request.getSource());
         income.setAmount(request.getAmount());
         income.setDescription(request.getDescription());
@@ -28,14 +32,26 @@ public class IncomeService {
         return repository.save(income);
     }
 
+    // USER READ 
     public List<Income> getIncomes(String email) {
         return repository.findByUserEmail(email);
     }
 
-    public Income updateIncome(Long id, IncomeRequest request, String email) {
+    // ADMIN READ ALL
+    public List<Income> getAllIncomes() {
+        return repository.findAll();
+    }
 
-        Income income = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Income not found"));
+    // UPDATE
+    public Income updateIncome(
+            Long id,
+            IncomeRequest request,
+            String email) {
+
+        Income income =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Income not found"));
 
         income.setSource(request.getSource());
         income.setAmount(request.getAmount());
@@ -44,10 +60,15 @@ public class IncomeService {
         return repository.save(income);
     }
 
-    public void deleteIncome(Long id, String email) {
+    // DELETE
+    public void deleteIncome(
+            Long id,
+            String email) {
 
-        Income income = repository.findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new ResourceNotFoundException("Income not found"));
+        Income income =
+                repository.findByIdAndUserEmail(id, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Income not found"));
 
         repository.delete(income);
     }
