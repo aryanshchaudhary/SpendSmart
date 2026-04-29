@@ -1,0 +1,23 @@
+# Maven
+target/
+*.log
+*.class
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# Optional (future services)
+application-local.properties
+.env
+
+# Optional
+HELP.md
