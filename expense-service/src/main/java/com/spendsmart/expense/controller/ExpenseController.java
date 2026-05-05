@@ -25,6 +25,7 @@ public class ExpenseController {
             @RequestBody ExpenseRequest request,
             @RequestHeader("X-User-Email") String email
     ) {
+    	System.out.println("🔥 API HIT");
         return service.addExpense(request, email);
     }
 

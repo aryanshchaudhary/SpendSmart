@@ -70,4 +70,27 @@ public class BudgetService {
 
         repository.delete(budget);
     }
+    
+    public void checkBudget(String category, Double amount, String email) {
+
+        System.out.println("🔍 Checking budget...");
+
+        List<Budget> budgets = repository.findByUserEmail(email);
+
+        for (Budget budget : budgets) {
+
+            if (budget.getCategory().equalsIgnoreCase(category)) {
+
+                if (amount > budget.getLimitAmount()) {
+
+                    System.out.println("🚨 BUDGET EXCEEDED for " + category);
+                    System.out.println("Limit: " + budget.getLimitAmount());
+                    System.out.println("Expense: " + amount);
+
+                } else {
+                    System.out.println("✅ Within budget for " + category);
+                }
+            }
+        }
+    }
 }
