@@ -3,11 +3,13 @@ package com.spendsmart.gateway.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
-public class CorsConfig {
+public class GlobalCorsConfig {
 
     @Bean
     public CorsWebFilter corsWebFilter() {
@@ -16,13 +18,20 @@ public class CorsConfig {
 
         config.setAllowCredentials(true);
 
-        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "https://spend-smart-frontend-silk.vercel.app"
+        ));
 
-        config.addAllowedOrigin("https://spend-smart-frontend-silk.vercel.app");
+        config.setAllowedHeaders(Arrays.asList("*"));
 
-        config.addAllowedHeader("*");
-
-        config.addAllowedMethod("*");
+        config.setAllowedMethods(Arrays.asList(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+        ));
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
