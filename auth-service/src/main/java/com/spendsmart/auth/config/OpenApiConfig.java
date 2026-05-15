@@ -24,7 +24,7 @@ public class OpenApiConfig {
 
                 // Gateway URL for Central Swagger
                 .servers(List.of(
-                        new Server().url("http://localhost:8080")
+                        new Server().url("https://spendsmart-auth-service.onrender.com")
                 ))
 
                 // API Info
