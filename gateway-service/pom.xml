@@ -37,13 +37,6 @@
 
     <!-- ================= DEPENDENCIES ================= -->
     <dependencies>
-
-        <!-- WEBFLUX -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-
         <!-- GATEWAY -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
